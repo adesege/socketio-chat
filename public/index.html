@@ -6,25 +6,34 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Socket Chat - by Adesege</title>
   <link rel="stylesheet" href="/assets/css/style.css" />
+  <link rel="stylesheet" href="/assets/css/modal.css" />
   <link rel="stylesheet" href="/assets/css/custom.css" />
 </head>
 <body>
+  <dialog id="modal">
+    <div class="modal-header">
+      <h3>Welcome to Socket Chat by Adesege</h3>
+      <h4>Tell us about you</h4>
+      <span class="error-message hidden"></span>
+    </div>
+      <div class="modal-body">
+    <form autocomplete="on">
+        <div class="input-group">
+          <input id="email-input" type="email" placeholder="Tell us your email address" required />
+        </div>
+        <div class="input-group">
+          <input id="username-input" type="text" placeholder="Tell us your username" required />
+        </div>
+    </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="login()" id="button-ok" type="submit">Ok</button>
+      </div>
+  </dialog>
+  
   <div id="chat-wrapper" class="hidden">
     <div class="columns left-sidebar">
-      <ul class="user-lists">
-        <li class="user">
-          <img src="https://www.gravatar.com/avatar/000000000000000000?d=identicon" />
-          <span>Adesege</span>
-        </li>
-        <li class="user">
-          <img src="https://www.gravatar.com/avatar/1234567898765?d=identicon" />
-          <span>Tim Doe</span>
-        </li>
-        <li class="user">
-          <img src="https://www.gravatar.com/avatar/111111144556677?d=identicon" />
-          <span>Jane Doe</span>
-        </li>
-      </ul>
+      <ul class="user-lists"> </ul>
       <div class="copyright">
         &copy; Built with love by <a href="https://twitter.com/adesege_">@Adesege_</a>
       </div>
