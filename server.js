@@ -34,6 +34,7 @@ io.on('connection', (socket) => {
     users[data.username] = userObject;
 
     socket.broadcast.emit('USER_JOINED', userObject);
+    socket.emit('SET_USERS', { users })
   });
 });
 
