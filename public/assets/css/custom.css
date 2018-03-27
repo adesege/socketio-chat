@@ -1,0 +1,12 @@
+* {
+  box-sizing: border-box;
+}
+
+.error-message {
+  padding: 1rem 1.5rem;
+  display: block;
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  margin-bottom: 1rem;
+}

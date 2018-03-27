@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Socketio Chat Modal - by Adesege</title>
+  <link rel="stylesheet" href="/assets/css/modal.css" />
+  <link rel="stylesheet" href="/assets/css/custom.css" />
+</head>
+<body>
+  <dialog id="modal">
+    <div class="modal-header">
+      <h3>Welcome to Socket Chat by Adesege</h3>
+      <h4>Tell us about you</h4>
+      <span class="error-message">Here's a sample error message</span>
+    </div>
+      <div class="modal-body">
+    <form autocomplete="on">
+        <div class="input-group">
+          <input id="email-input" type="email" placeholder="Tell us your email address" required />
+        </div>
+        <div class="input-group">
+          <input id="username-input" type="text" placeholder="Tell us your username" required />
+        </div>
+    </form>
+      </div>
+      <div class="modal-footer">
+        <button id="button-ok" type="submit">Ok</button>
+      </div>
+  </dialog>
+  <script src="/modal.js"></script>
+</body>
+</html>
