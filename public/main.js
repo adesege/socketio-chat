@@ -9,6 +9,7 @@ const $userLists = document.getElementsByClassName('user-lists')[0];
 const $errorSpan = document.getElementsByClassName('error-message')[0];
 const $currentUserAvatar = document.getElementsByClassName('current-user-avatar')[0];
 const $messageContainer = document.getElementById('message');
+const $messageTextarea = document.getElementById('message-textarea');
 
 let isConnected = false;
 let currentUsername;
@@ -98,6 +99,51 @@ const log = (message) => {
   }
 }
 
+const onSendMessage = (event) => {
+  if(event.keyCode === 13 && !event.shiftKey) {
+    event.preventDefault();
+    
+    const message = $messageTextarea.value;
+
+    addNewChatMessage({
+      message,
+      username: currentUsername,
+    });
+
+    socket.emit('SEND_NEW_MESSAGE', {
+      message,
+    });
+  }
+}
+
+$messageTextarea.addEventListener("keydown", onSendMessage);
+
+const addNewChatMessage = (data) => {
+  const $newMessageContainer = document.createElement('div');
+  const $nameHolder = document.createElement('h3');
+  const $messageDescription = document.createElement('span');
+
+  $newMessageContainer.classList += 'message';
+
+  if(isCurrentUser(data.username)) {
+    $newMessageContainer.classList += ' right';
+    $messageDescription.classList += ' caret-right';
+  } else {
+    $newMessageContainer.classList += ' left';
+    $messageDescription.classList += ' caret-left';
+  }
+
+  $messageDescription.classList += ' caret';
+  $nameHolder.innerText = data.username;
+  $messageDescription.innerText = data.message;
+
+  $newMessageContainer.appendChild($nameHolder);
+  $newMessageContainer.appendChild($messageDescription);
+
+  $messageContainer.appendChild($newMessageContainer);
+  $messageTextarea.value = '';
+};
+
 socket.on('connect', () => {
   console.log('Client connected');
 });
@@ -133,3 +179,9 @@ socket.on('USER_LEFT', (data) => {
     removeUserFromSidebar(data);
   }
 });
+
+socket.on('NEW_MESSAGE', (data) => {
+  if(isConnected) {
+    addNewChatMessage(data);
+  }
+})

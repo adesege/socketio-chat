@@ -38,6 +38,13 @@ io.on('connection', (socket) => {
     socket.emit('SET_USERS', { users })
   });
 
+  socket.on('SEND_NEW_MESSAGE', (data) => {
+    socket.broadcast.emit('NEW_MESSAGE', {
+      username: socket.username,
+      message: data.message,
+    });
+  });
+
   socket.on('disconnect', () => {
     delete users[socket.username];
 
