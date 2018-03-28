@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
       return;
     }
 
-    socket.emit('LOGIN_SUCCESSFUL');
+    socket.emit('LOGIN_SUCCESSFUL', { username: data.username });
 
     const userObject = {
       username: data.username,

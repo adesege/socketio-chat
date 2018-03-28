@@ -7,8 +7,10 @@ const $buttonOK = document.getElementById('button-ok');
 const $chatWrapper = document.getElementById('chat-wrapper');
 const $userLists = document.getElementsByClassName('user-lists')[0];
 const $errorSpan = document.getElementsByClassName('error-message')[0];
+const $currentUserAvatar = document.getElementsByClassName('current-user-avatar')[0];
 
 let isConnected = false;
+let currentUsername;
 
 $modalContainer.showModal();
 
@@ -29,8 +31,9 @@ const login = () => {
     showErrorMessage(data);
   });
 
-  socket.on('LOGIN_SUCCESSFUL', () => {
+  socket.on('LOGIN_SUCCESSFUL', (data) => {
     isConnected = true;
+    currentUsername = data.username;
     $modalContainer.close();
     $chatWrapper.classList.remove('hidden');
   });
@@ -52,7 +55,7 @@ const addUserToSidebar = (data) => {
   $userLists.insertBefore($user, $userLists.firstChild);
 };
 
-const isUserExist = (user) => {
+const isUserExistOnSidebar = (user) => {
   const $user = document.getElementById(user);
   if ($user && $user.id !== user) {
     return true;
@@ -60,12 +63,24 @@ const isUserExist = (user) => {
   return false;
 }
 
+const isCurrentUser = (username) => {
+  if(currentUsername === username) {
+    return true;
+  }
+
+  return false;
+};
+
+const addAvatarBesideTextarea = (user) => {
+  $currentUserAvatar.src = user.imgUrl;
+};
+
 socket.on('connect', () => {
   console.log('Client connected');
 });
 
 socket.on('USER_JOINED', (data) => {
-  if (isConnected && !isUserExist(data.username)) {
+  if (isConnected && !isUserExistOnSidebar(data.username)) {
     addUserToSidebar(data);
   }
 });
@@ -74,8 +89,12 @@ socket.on('SET_USERS', (data) => {
   if(isConnected && data.users.length !== 0) {
     Object.keys(data.users).map((user) => {
       const aUser = data.users[user];
-      if (!isUserExist(aUser.username)) {
+      if (!isUserExistOnSidebar(aUser.username)) {
         addUserToSidebar(aUser) 
+      }
+
+      if (isCurrentUser) {
+        addAvatarBesideTextarea(aUser);
       }
     });
   }
