@@ -31,10 +31,19 @@ io.on('connection', (socket) => {
       imgUrl: `https://www.gravatar.com/avatar/${md5(data.email)}?d=identicon`
     };
 
+    socket.username = data.username;
     users[data.username] = userObject;
 
     socket.broadcast.emit('USER_JOINED', userObject);
     socket.emit('SET_USERS', { users })
+  });
+
+  socket.on('disconnect', () => {
+    delete users[socket.username];
+
+    socket.broadcast.emit('USER_LEFT', {
+      username: socket.username,
+    });
   });
 });
 

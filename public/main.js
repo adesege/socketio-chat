@@ -8,6 +8,7 @@ const $chatWrapper = document.getElementById('chat-wrapper');
 const $userLists = document.getElementsByClassName('user-lists')[0];
 const $errorSpan = document.getElementsByClassName('error-message')[0];
 const $currentUserAvatar = document.getElementsByClassName('current-user-avatar')[0];
+const $messageContainer = document.getElementById('message');
 
 let isConnected = false;
 let currentUsername;
@@ -75,8 +76,34 @@ const addAvatarBesideTextarea = (user) => {
   $currentUserAvatar.src = user.imgUrl;
 };
 
+const removeUserFromSidebar = (data) => {
+  const $user = document.getElementById(data.username);
+  if(!isUserExistOnSidebar(data.username)) {
+    $user.remove();
+  }
+}
+
+const log = (message) => {
+  if(isConnected) {
+    const $messageStatusContainer = document.createElement('div');
+    $messageStatusContainer.classList += 'message-statuses';
+
+    const $messageStatus = document.createElement('div');
+    $messageStatus.classList += 'message-status';
+
+    $messageStatus.innerHTML = message;
+
+    $messageStatusContainer.appendChild($messageStatus);
+    $messageContainer.appendChild($messageStatusContainer);
+  }
+}
+
 socket.on('connect', () => {
   console.log('Client connected');
+});
+
+socket.on('disconnect', () => {
+  log('You are disconnected');
 });
 
 socket.on('USER_JOINED', (data) => {
@@ -97,5 +124,12 @@ socket.on('SET_USERS', (data) => {
         addAvatarBesideTextarea(aUser);
       }
     });
+  }
+});
+
+socket.on('USER_LEFT', (data) => {
+  if(isConnected) {
+    log(`${data.username} left the chat`);
+    removeUserFromSidebar(data);
   }
 });
