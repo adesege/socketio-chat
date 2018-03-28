@@ -38,6 +38,7 @@ const login = () => {
     currentUsername = data.username;
     $modalContainer.close();
     $chatWrapper.classList.remove('hidden');
+    log('You joined the chat');
   });
 };
 
@@ -153,8 +154,11 @@ socket.on('disconnect', () => {
 });
 
 socket.on('USER_JOINED', (data) => {
-  if (isConnected && !isUserExistOnSidebar(data.username)) {
-    addUserToSidebar(data);
+  if (isConnected) {
+    log(`${data.username} joined the chat`);
+    if (!isUserExistOnSidebar(data.username)) {
+      addUserToSidebar(data);
+    }
   }
 });
 
